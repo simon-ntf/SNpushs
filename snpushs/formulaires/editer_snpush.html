@@ -1,0 +1,72 @@
+<div class='formulaire_spip formulaire_editer formulaire_#FORM formulaire_#FORM-#ENV{id_snpush,nouveau}'>
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV**{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+	[(#ENV{editable})
+	<form method='post' action='#ENV{action}'>
+		<div>[(#ACTION_FORMULAIRE{#ENV{action}})]<div>
+		<input type='hidden' name='id_snpush' value='#ENV{id_snpush}' />
+		<fieldset><legend><:snpushs:edit_section_editoriale:></legend>
+			[(#SAISIE{input, titre, label=<:snpushs:edit_titre_label:>, maxlength='255', obligatoire=oui})]
+			[(#ENV{id_snpush}|=={oui}|?{
+			[(#SAISIE{selection, pushtype, label=<:snpushs:edit_pushtype_label:>, data=#ENV{liste_snpushs_types}, explication=<:snpushs:edit_pushtype_explication:>, defaut=#ENV**{pushtype}, cacher_option_intro=oui})]
+			,[(#SAISIE{selection, pushtype, label=<:snpushs:edit_pushtype_label:>, data=#ENV{liste_snpushs_types}, explication=<:snpushs:edit_pushtype_explication:>, defaut=#ENV**{pushtype}, cacher_option_intro=oui, disable=oui})]
+			})]
+			[(#SAISIE{selection, statut, label=<:snpushs:edit_statut_label:>, data=#ENV{liste_snpushs_statuts}, defaut=#ENV**{statut}|sinon{prepa}, cacher_option_intro=oui})]
+		</fieldset>
+		<fieldset class="modal mode-alerte"><legend><:snpushs:edit_section_urgence:></legend>
+			[(#SAISIE{oui_non, urgence, label=<:snpushs:edit_urgence_label:>, explication=<:snpushs:edit_urgence_explication:>, defaut=#ENV**{urgence}})]
+		</fieldset>
+		<fieldset class="modal mode-libre mode-alerte mode-publicite"><legend><:snpushs:edit_section_resume:></legend>
+			[(#SAISIE{input, resume, label=<:snpushs:edit_resume_label:>, maxlength='255'})]
+		</fieldset>
+		<fieldset class="modal mode-libre mode-alerte mode-publicite"><legend><:snpushs:edit_section_snimage:></legend>
+		<div class="editer editer_id_document[ (#ENV**{erreurs}|table_valeur{id_document}|oui)erreur]">
+			<label for="id_document"><:snimage:snimage_label_doc_ref:></label>[
+			<span class='erreur_message'>(#ENV**{erreurs}|table_valeur{id_document})</span>
+			]#INCLUDE{fond=prive/inclure/saisies/selecteur_snimage,nom=id_document,size=6,maxlength=21,defaut=#ENV**{id_document}}
+		</div>
+		</fieldset>
+		<fieldset class="modal mode-article"><legend><:snpushs:edit_section_cible_id:></legend>
+			[(#SAISIE{input, cible_article, label=<:snpushs:edit_cible_article_label:>, explication=<:snpushs:edit_cible_article_explication:>, defaut=#ENV**{cible_id}})]
+		</fieldset>
+		<fieldset class="modal mode-auteur"><legend><:snpushs:edit_section_cible_id:></legend>
+			[(#SAISIE{auteurs, cible_auteur, label=<:snpushs:edit_cible_auteur_label:>,statut=#LISTE{1comite,6forum}, explication=<:snpushs:edit_cible_auteur_explication:>, cacher_option_intro=oui, defaut=#ENV**{cible_id}})]
+		</fieldset>
+		<fieldset class="modal mode-rubrique"><legend><:snpushs:edit_section_cible_id:></legend>
+			[(#SAISIE{input, cible_rubrique, label=<:snpushs:edit_cible_rubrique_label:>, explication=<:snpushs:edit_cible_rubrique_explication:>, defaut=#ENV**{cible_id}})]
+		</fieldset>
+		<fieldset class="modal mode-libre mode-publicite mode-contact"><legend><:snpushs:edit_section_texte:></legend>
+			<p class="snimages-prive-explication modal mode-contact"><:snpushs:edit_texte_contact_explication:></p>
+			[(#SAISIE{textarea, texte, label=<:snpushs:edit_texte_label:>, rows="6"})]
+		</fieldset>
+		<fieldset class="modal mode-contact"><legend><:snpushs:edit_section_geoloc:></legend>
+			[(#CONFIG{sn_geoloc_activer}|=={on}|oui)
+			<p class="snimages-prive-explication"><:snpushs:edit_geoloc_explication:></p>
+			[(#SAISIE{input, latitude, label=<:snpushs:edit_latitude_label:>, defaut=#ENV**{latitude}, maxlength=32})]
+			[(#SAISIE{input, longitude, label=<:snpushs:edit_longitude_label:>, defaut=#ENV**{longitude}, maxlength=32})]
+			]
+		</fieldset>
+		<fieldset class="modal mode-alerte mode-libre mode-publicite"><legend><:snpushs:edit_section_motscles:></legend>
+		[(#SAISIE{input, motscles, label=<:snpushs:edit_motscles_label:>})]
+		</fieldset>
+		<fieldset><legend><:snpushs:edit_section_css:></legend>
+			[(#SAISIE{input, css_classes, label=<:snpushs:edit_css_label:>})]
+		</fieldset>
+		<!--extra-->
+		<p class="boutons"><input type='submit' class='submit' value='<:bouton_enregistrer:>' /></p>
+		</div></div>
+	</form>
+	]
+</div>
+<script type="text/javascript">
+	if (window.jQuery){	jQuery(document).ready(function(){
+		$('#champ_pushtype').on('change',function(e){ sn_PushChangeMode(); });
+		sn_PushChangeMode();
+		function sn_PushChangeMode(){
+			var mode = $('#champ_pushtype').val();
+			$('.modal').css('display','none');
+			$('.mode-'+mode).css('display','block');
+		}
+	;}); }
+</script>
+<!--SN Pushs - formulaires/editer_snpush-->

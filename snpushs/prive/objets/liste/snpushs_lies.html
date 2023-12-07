@@ -1,0 +1,65 @@
+[(#SET{defaut_tri,#ARRAY{
+	date,#ENV{date_sens,-1},
+	num titre,1,
+	id_snpush,1,
+	points,-1
+}})
+]
+#SET{selection,#ENV{objet_source}|lister_objets_lies{#ENV{objet},#ENV{id_objet},#ENV{_objet_lien}}}
+#SET{snpush_pos,sn_position} #SET{liste_positions,#GET{snpush_pos}|sn_const_options_trads{E,sncore}}
+#SET{snpush_type,snpush_type} #SET{liste_snpushtypes,#GET{snpush_type}|sn_const_options_trads{E,snpushs}}
+#SET{snpush_positions,''}
+#SET{btn_class,''}
+#SET{vue_autorisee,''}
+<B_liste>
+#ANCRE_PAGINATION
+<div class="liste-objets liste-objets-lies snpushs ajax">
+<table class='spip liste'>
+[<caption><strong class="caption">(#ENV*{titre,#GRAND_TOTAL|singulier_ou_pluriel{snpushs:info_1_snpush,snpushs:info_nb_snpushs}})</strong></caption>]
+	<thead>
+		<tr class='first_row'>
+			<th class='statut' scope='col'></th>
+			<th class='titre' scope='col'><:info_titre:></th>
+			<th class='action' scope='col'><:sncore:info_titre:></th>
+			<th class='action' scope='col'>&nbsp;</th>
+			<th class='action' scope='col'>&nbsp;</th>
+			<th class='action' scope='col'>&nbsp;</th>
+		</tr>
+	</thead>
+	<tbody>
+	<BOUCLE_liste(SNPUSHS_LIENS){objet}{id_objet}{id_snpush IN #GET{selection}}{par sn_priorite}{pagination #ENV{nb,10}}>
+		#SET{snpush_positions,#SN_POSITION|sn_explose}
+		<BOUCLE_pushs(SNPUSHS){tout}{id_snpush}{0,1}>
+		<tr class="[(#COMPTEUR_BOUCLE|alterner{row_odd,row_even})][ (#EXPOSE|unique)][(#ID_SNPUSH|=={#ENV{id_lien_ajoute}}|oui)append]">
+			<td class="statut">[(#STATUT|puce_statut{snpush})]</td>
+			<td class='titre principale'><div>
+				<p><a href="[(#ID_SNPUSH|generer_url_entite{snpush})]"
+				title="<:info_numero_abbreviation|attribut_html:> #ID_SNPUSH">[<span class='rang'>(#RANG).</span> ]<h3>#TITRE</h3></a></p>
+				[<p><strong>(#GET{liste_snpushtypes}|sn_trouver{#PUSHTYPE})</strong></p>]
+			</div></td>
+			<td class='sn-positionner'><div>
+				<B_positions>
+				<BOUCLE_positions(DATA){source array, #GET{liste_positions}}>
+					#SET{vue_autorisee,''} [(#SET{vue_autorisee,#CLE|sn_push_position_autorisee{#PUSHTYPE,#OBJET,#ID_OBJET}})]
+					[(#CLE|in_array{#GET{snpush_positions}}|oui)[(#SET{btn_class,'sn-pos-on'})]]
+					[(#CLE|in_array{#GET{snpush_positions}}|non)[(#SET{btn_class,''})]]
+					<div class='action[ (#GET{vue_autorisee}|=={oui}|non)sn-prive-cacher]'><button type="submit" class="positionner btn btn_mini sn-btn #GET{btn_class}" name="sn_lien_editer[snpush-#ID_SNPUSH-#OBJET-#ID_OBJET-positionner-#CLE]" value="sn_lien_editer">#VALEUR</button></div>
+				</BOUCLE_positions></B_positions>
+			</div></td>
+			<td class='action'><button type="submit" class="prioriser btn btn_mini sn-btn" name="sn_lien_editer[snpush-#ID_SNPUSH-#OBJET-#ID_OBJET-prioriser]" value="sn_lien_editer"><:snpushs:lien_prioriser:>[ (#CHEMIN_IMAGE{prioriser-12.svg}|balise_img)]</button></td>
+			<td class='action'><button type="submit" class="deprioriser btn btn_mini sn-btn" name="sn_lien_editer[snpush-#ID_SNPUSH-#OBJET-#ID_OBJET-deprioriser]" value="sn_lien_editer"><:snpushs:lien_deprioriser:>[ (#CHEMIN_IMAGE{deprioriser-12.svg}|balise_img)]</button></td>
+			<td class='action'><button type="submit" class="supprimer btn_link btn_mini" name="supprimer_lien[snpush-#ID_SNPUSH-#OBJET-#ID_OBJET-supprimer]" value="X"><:snpushs:lien_retirer_snpush:>[ (#CHEMIN_IMAGE{supprimer-12.svg}|balise_img)]</button></td>
+		</tr>
+		</BOUCLE_pushs>
+	</BOUCLE_liste>
+	</tbody>
+</table>
+[<nav class='pagination'>(#PAGINATION{prive})</nav>]
+[(#GRAND_TOTAL|>{3}|oui)<div class="action"><button type="submit" class="supprimer btn_link btn_mini" name="supprimer_lien\[snpush-*-#OBJET-#ID_OBJET\]" value="X"><:snpushs:lien_retirer_tous_snpushs:>[ (#CHEMIN_IMAGE{supprimer-12.svg}|balise_img)]</button></div>]
+</div>
+</B_liste>
+<div class="liste-objets liste-objets-lies snpushs caption-wrap">
+<strong class="caption">[(#ENV*{titre,<:snpushs:info_aucun_snpush:>}) ]</strong>
+</div>
+<//B_liste>
+<!-- SN Pushs - prive/objets/liste/snpushs_lies -->

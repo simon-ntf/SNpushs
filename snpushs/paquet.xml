@@ -1,0 +1,33 @@
+<paquet
+	prefix="snpushs"
+	categorie="edition"
+	version="1.0.0"
+	etat="test"
+	compatibilite="[3.0.0;["
+	logo="prive/themes/spip/images/snpushs-128.png"
+	schema="1.0.0"
+	documentation="https://www.snsuite.net"
+>
+	<nom>SN Pushs</nom>
+	<licence lien="http://www.gnu.org/licenses/gpl-3.0.html">GPL 3</licence>
+	<auteur lien="https://git.spip.net/Simon">Simon N</auteur>
+	
+	<necessite nom="saisies" compatibilite="[3.43.2;]" />
+	<necessite nom="facteur" compatibilite="[4.3.4;]" />
+	<necessite nom="sncore" compatibilite="[0;[" />
+	<necessite nom="snimages" compatibilite="[0;[" />
+	<necessite nom="snedition" compatibilite="[0;[" />
+	<necessite nom="snabonnements" compatibilite="[0;[" />
+
+	<pipeline nom="affiche_gauche" inclure="snpushs_pipelines.php" />
+	<pipeline nom="affiche_milieu" inclure="snpushs_pipelines.php" />
+	<pipeline nom="configurer_liste_metas" inclure="snpushs_pipelines.php" />
+	<pipeline nom="declarer_tables_auxiliaires" inclure="base/snpushs.php" />
+	<pipeline nom="declarer_tables_interfaces" inclure="base/snpushs.php" />
+	<pipeline nom="declarer_tables_objets_sql" inclure="base/snpushs.php" />
+	<pipeline nom="post_edition_lien" inclure="snpushs_pipelines.php" />
+
+	<menu nom="snpushs" titre="snpushs:menu_texte_snpushs" parent="menu_edition" icone="images/icone-snpushs-16.png"/>
+	<menu nom="snschemas" titre="snpushs:menu_texte_schemas" parent="menu_edition" icone="images/icone-snschemas-16.png"/>
+	<menu nom="snpush_creer" titre="snpushs:icone_creer_nouveau_snpush" parent="outils_rapides" icone="images/snpush-new-16.svg" action="snpush_edit" parametres="new=oui" />
+</paquet>

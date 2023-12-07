@@ -1,0 +1,17 @@
+<B_auteurs>
+<div>
+	<BOUCLE_auteurs(AUTEURS){statut=1comite}{id_auteur}>
+		[<div class="sn-push-image">(#MODELE{snvmg,id_document,format=cov})</div>]
+		[<p class="sn-push-pseudo"><strong>(#NOM)</strong></p>]
+		[<p class="sn-push-titre">[(#SN_CIVILITE|ucfirst) ][(#PRENOM) ]<strong>(#SN_NOM)</strong></p>]
+		[<p class="sn-push-citation"><i>(#ENV{citation})</i></p>]
+		[<p class="sn-push-auteur-fonctions">(#SN_FONCTIONS)</p>]
+		[<p class="sn-push-auteur-societe">(#SN_SOCIETE)</p>]
+		[<p class="sn-push-auteur-ville">(#SN_VILLE)</p>]
+		[<p class="sn-push-auteur-pays">(#SN_PAYS)</p>]
+		[(#CONFIG{sn_abo_fiches_auteurs_activer}|=={on}|oui)[(#SN_PUBLIER_FICHE|=={on}|oui)
+		[<p class="sn-push-lien"><a class="sn-btn" href="(#URL_PAGE{profil}|parametre_url{nom,#NOM})"><:snedition:lien_savoir_plus:></a></p>]
+		]]
+	</BOUCLE_auteurs>
+</div>
+</B_auteurs>

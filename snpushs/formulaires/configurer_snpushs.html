@@ -1,0 +1,22 @@
+<div class='formulaire_spip formulaire_configurer'>
+    [<p class="reponse_formulaire reponse_formulaire_ok">(#ENV**{message_ok})</p>]
+    [<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+    <form method='post' action='#ENV{action}' id='formulaire_configurer_pushs'><div>
+    [(#ACTION_FORMULAIRE{#ENV{action}})]
+    <div>
+			[(#PLUGIN{snsoustheme}|non)<div><fieldset><div><h3><:snedition:config_section_avertissement:></h3><p class="sn-prive-txt-mini sn-prive-avertissement"><:snedition:config_avertissement_snsuite:></p></div></fieldset></div>]
+			<div><fieldset><div>
+			<h3><:snpushs:config_section_titre:></h3>
+			[(#SAISIE{'oui_non', sn_pushs_autoriser_redacteurs, label=<:snpushs:config_snpushs_autoriser_redacteurs:>, explication=<:snpushs:config_snpushs_autoriser_redacteurs_explication:>, defaut=#ENV**{sn_pushs_autoriser_redacteurs}})]
+        	[(#SAISIE{'oui_non', sn_pushs_alertes_globales, label=<:snpushs:config_snpushs_alertes_globales:>, explication=<:snpushs:config_snpushs_alertes_globales_explication:>, defaut=#ENV**{sn_pushs_alertes_globales}})]
+        	[(#SAISIE{'selection', sn_pushs_schema_articles, label=<:snpushs:config_snpushs_schema_articles:>, defaut=#ENV**{sn_pushs_schema_articles}, explication=<:snpushs:config_snpushs_schema_articles_explication:>, datas=#ENV{liste_schemas_articles}, cacher_option_intro=oui})]
+        	[(#SAISIE{'selection', sn_pushs_schema_rubriques, label=<:snpushs:config_snpushs_schema_rubriques:>, defaut=#ENV**{sn_pushs_schema_rubriques}, explication=<:snpushs:config_snpushs_schema_rubriques_explication:>, datas=#ENV{liste_schemas_rubriques}, cacher_option_intro=oui})]
+        	[(#SAISIE{'choisir_objets', sn_pushs_schema_defaut_objets, label=<:snpushs:config_snpushs_schema_defaut_objets:>, defaut=#ENV**{sn_pushs_schema_defaut_objets}, explication=<:snpushs:config_snpushs_schema_defaut_objets_explication:>, exclus=#ENV{liste_objets_exclus}})]
+			[(#SAISIE{'oui_non', sn_pushs_schema_defaut, label=<:snpushs:config_snpushs_schema_defaut:>, defaut=#ENV**{sn_pushs_schema_defaut}, explication=<:snpushs:config_snpushs_schema_defaut_explication:>})]
+			</div></fieldset></div>
+    </div>
+    <!--extra-->
+    <p class="boutons"><input type='submit' class='submit' value='<:bouton_enregistrer:>' /></p>
+    </div></form>
+</div>
+<!-- SN Pushs - formulaires/configurer_snpushs -->

@@ -1,0 +1,31 @@
+[(#SET{pushtypetrad,' '})]
+[(#REM) Necessite ENV liste_snpushs (array contenant les id des blocs snpush concernés dans l'ordre d'affichage) ]
+<B_snblocs>
+<div [ id="(#ENV{domid})-conteneur"] class="sn-pushs sn-pushs-#ENV{sn_position}[ (#ENV{mode_diapo}|=={oui}|oui)sn-pushs-diapo][ (#ENV{domclass})]">
+	[(#ENV{mode_diapo}|=={oui}|oui)<div [ id="(#ENV{domid})-diapo"] class="sn-diapo"[ data-animation="(#ENV{diapo_animation}|sinon{degauche_lent})"][ data-defilement="(#ENV{diapo_defilement}|sinon{5})"][ data-boutons="(#ENV{diapo_boutons}|sinon{points})"]>]
+	<BOUCLE_snblocs(DATA){source array, #ENV{liste_snpushs}}>
+	<BOUCLE_snblocsblocs(SNPUSHS){statut=publie}{id_snpush=#VALEUR|sn_trouver{id_snpush}}>
+		<div class="sn-push[ sn-push-(#ENV{sn_position})][ sn-push-(#PUSHTYPE)]">
+			[(#ENV{mode_diapo}|=={oui}|non)
+			[(#SET{pushtypetrad, snpushs:sn_push_opt_#PUSHTYPE})]
+			[(#PUSHTYPE|=={libre}|non)[<p class="sn-push-etiquette"><span>(#GET{pushtypetrad}|_T|ucfirst)</span></p>]]
+			]
+			[(#PUSHTYPE|=={article}|oui)<INCLURE{fond=inclure/sn_push_article,id_article=#CIBLE_ID,sn_position=#ENV{sn_position}}>]
+			[(#PUSHTYPE|=={auteur}|oui)<INCLURE{fond=inclure/sn_push_auteur,id_auteur=#CIBLE_ID,citation=#TITRE,sn_position=#ENV{sn_position}}>]
+			[(#PUSHTYPE|=={rubrique}|oui)<INCLURE{fond=inclure/sn_push_rubrique,id_rubrique=#CIBLE_ID,sn_position=#ENV{sn_position}}>]
+			[(#PUSHTYPE|=={article}|ou{#PUSHTYPE|=={auteur}}|ou{#PUSHTYPE|=={rubrique}}|non)
+				<div>
+				[(#MOTSCLES|oui)<div class="sn-push-motscles">[(#MOTSCLES|sn_conv_motscles)]</div>]
+				[(#PUSHTYPE|=={libre}|oui)<div class="sn-push-image">#MODELE{snvmg,id_document,classe="sn-img-push"}</div>]
+				[(#ENV{sn_position}|=={corps}|non)[(#PUSHTYPE|=={libre}|non)<p class="sn-push-titre sn-typo-t">[ (#URGENCE|=={on}|oui)<span class="sn-txt-urgent"><:snpushs:push_urgent_texte:></span> ]#TITRE</p>]]
+				[(#PUSHTYPE|=={libre}|ou{#ENV{sn_position}|=={corps}|oui}|oui)<h2 class="sn-push-titre">#TITRE</h2>]
+				[<p class="sn-push-resume">(#RESUME)</p>]
+				[<div class="sn-push-texte">(#TEXTE)</div>]
+				</div>
+			]
+		</div>
+	</BOUCLE_snblocsblocs>
+	</BOUCLE_snblocs>
+	[(#ENV{mode_diapo}|=={oui}|oui)</div>]
+</div>
+</B_snblocs>

@@ -1,0 +1,34 @@
+[(#SET{maintenant,#DATE})]
+<B_articles>
+<div>
+	<BOUCLE_articles(ARTICLES){statut=publie}{id_article}>
+		[<div class="sn-push-image">(#MODELE{snvmg,id_document,format=car})</div>]
+		[<p class="sn-push-titre sn-push-objet-titre">(#TITRE)</p>]
+		[(#EVT_DEBUT|normaliser_date|oui)<div class="sn-push-evt-dates">
+			[(#ENV{sn_position}|=={colg}|ou{#ENV{sn_position}|=={cold}}|?{
+			[<p class="sn-push-date sn-push-evt-date">(#EVT_FIN|normaliser_date|?{[(#EVT_DEBUT|affdate_debut_fin{#EVT_FIN,oui,jour})],[(#EVT_DEBUT|affdate)]})</p>],
+			[<p class="sn-push-date sn-push-evt-date">(#EVT_FIN|normaliser_date|?{[(#EVT_DEBUT|affdate_debut_fin{#EVT_FIN,oui,jour annee})],[(#EVT_DEBUT|affdate)]})</p>]
+			})]
+		</div>]
+
+		[(#CHAPO|textebrut|couper{200})]
+
+		[(#EVT_INSCR|normaliser_date|oui)<div class="sn-push-evt-inscriptions">
+			[(#EVT_INSCR|<={#GET{maintenant}}|et{#EVT_INSCR_FIN|>={#GET{maintenant}}}|?{
+				[<p class="sn-push-date sn-push-evt-inscr-date"><:snedition:sn_evt_inscriptions_ouvertes:> (#EVT_INSCR_FIN|affdate_court).</p>
+				[<p class="sn-push-evt-inscr-texte"><:snedition:sn_evt_inscriptions_modalites:>(#INSCR_TEXTE)</p>]]
+				,
+				[(#EVT_INSCR_FIN|>{#GET{maintenant}}|oui)
+					<p class="sn-push-date sn-push-evt-inscr-date"><:snedition:sn_evt_inscriptions_closes:>.</p>
+				]
+				[(#EVT_INSCR|<{#GET{maintenant}}|oui)
+					<p class="sn-push-date sn-push-evt-inscr-date"><:snedition:sn_evt_inscriptions_a_venir:>[ (#EVT_INSCR|normaliser_date|affdate_court)].</p>
+				]
+				}
+			)]
+		</div>]
+
+		<p class="sn-push-lien"><a class="sn-btn" href="#URL_ARTICLE"><:snedition:lien_savoir_plus:></a></p>
+	</BOUCLE_articles>
+</div>
+</B_articles>
